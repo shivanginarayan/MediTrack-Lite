@@ -90,79 +90,92 @@ export const useInventoryStore = create<InventoryState>()(persist(
           // Mock data for demo
           await new Promise(resolve => setTimeout(resolve, 500)); // Simulate API delay
           
-          const mockItems: MedicationItem[] = [
-            {
-              id: '1',
-              name: 'Aspirin 325mg',
-              description: 'Pain reliever and fever reducer',
-              quantity: 150,
-              unit: 'tablets',
-              category: 'prescription',
-              location: 'Pharmacy A-1',
-              expiryDate: '2025-12-31',
-              minStockLevel: 50,
-              maxStockLevel: 500,
-              cost: 0.15,
-              supplier: 'MedSupply Co',
-              createdAt: '2024-01-15T10:00:00Z',
-              updatedAt: '2024-01-15T10:00:00Z',
-              genericName: 'Acetylsalicylic acid',
-              dosage: '325mg',
-              batchNumber: 'ASP2024001',
-              manufacturer: 'PharmaCorp',
-              status: 'in-stock'
-            },
-            {
-              id: '2',
-              name: 'Ibuprofen 200mg',
-              description: 'Anti-inflammatory medication',
-              quantity: 25,
-              unit: 'tablets',
-              category: 'otc',
-              location: 'Pharmacy B-2',
-              expiryDate: '2025-06-30',
-              minStockLevel: 30,
-              maxStockLevel: 300,
-              cost: 0.12,
-              supplier: 'HealthMeds Inc',
-              createdAt: '2024-01-10T14:30:00Z',
-              updatedAt: '2024-01-10T14:30:00Z',
-              genericName: 'Ibuprofen',
-              dosage: '200mg',
-              batchNumber: 'IBU2024002',
-              manufacturer: 'WellnessPharma',
-              status: 'low-stock'
-            },
-            {
-              id: '3',
-              name: 'Vitamin D3 1000IU',
-              description: 'Vitamin D supplement',
-              quantity: 0,
-              unit: 'capsules',
-              category: 'supplement',
-              location: 'Pharmacy C-3',
-              expiryDate: '2025-03-15',
-              minStockLevel: 20,
-              maxStockLevel: 200,
-              cost: 0.08,
-              supplier: 'VitaHealth Ltd',
-              createdAt: '2024-01-05T09:15:00Z',
-              updatedAt: '2024-01-05T09:15:00Z',
-              genericName: 'Cholecalciferol',
-              dosage: '1000IU',
-              batchNumber: 'VIT2024003',
-              manufacturer: 'NutriCorp',
-              status: 'out-of-stock'
-            }
-          ];
+          const currentItems = get().items;
           
-          set({ 
-            items: mockItems,
-            total: mockItems.length,
-            page: 1,
-            totalPages: 1,
-            isLoading: false 
-          });
+          // Only initialize with default mock data if no items exist
+          if (currentItems.length === 0) {
+            const mockItems: MedicationItem[] = [
+              {
+                id: '1',
+                name: 'Aspirin 325mg',
+                description: 'Pain reliever and fever reducer',
+                quantity: 150,
+                unit: 'tablets',
+                category: 'prescription',
+                location: 'Pharmacy A-1',
+                expiryDate: '2025-12-31',
+                minStockLevel: 50,
+                maxStockLevel: 500,
+                cost: 0.15,
+                supplier: 'MedSupply Co',
+                createdAt: '2024-01-15T10:00:00Z',
+                updatedAt: '2024-01-15T10:00:00Z',
+                genericName: 'Acetylsalicylic acid',
+                dosage: '325mg',
+                batchNumber: 'ASP2024001',
+                manufacturer: 'PharmaCorp',
+                status: 'in-stock'
+              },
+              {
+                id: '2',
+                name: 'Ibuprofen 200mg',
+                description: 'Anti-inflammatory medication',
+                quantity: 25,
+                unit: 'tablets',
+                category: 'otc',
+                location: 'Pharmacy B-2',
+                expiryDate: '2025-06-30',
+                minStockLevel: 30,
+                maxStockLevel: 300,
+                cost: 0.12,
+                supplier: 'HealthMeds Inc',
+                createdAt: '2024-01-10T14:30:00Z',
+                updatedAt: '2024-01-10T14:30:00Z',
+                genericName: 'Ibuprofen',
+                dosage: '200mg',
+                batchNumber: 'IBU2024002',
+                manufacturer: 'WellnessPharma',
+                status: 'low-stock'
+              },
+              {
+                id: '3',
+                name: 'Vitamin D3 1000IU',
+                description: 'Vitamin D supplement',
+                quantity: 0,
+                unit: 'capsules',
+                category: 'supplement',
+                location: 'Pharmacy C-3',
+                expiryDate: '2025-03-15',
+                minStockLevel: 20,
+                maxStockLevel: 200,
+                cost: 0.08,
+                supplier: 'VitaHealth Ltd',
+                createdAt: '2024-01-05T09:15:00Z',
+                updatedAt: '2024-01-05T09:15:00Z',
+                genericName: 'Cholecalciferol',
+                dosage: '1000IU',
+                batchNumber: 'VIT2024003',
+                manufacturer: 'NutriCorp',
+                status: 'out-of-stock'
+              }
+            ];
+            
+            set({ 
+              items: mockItems,
+              total: mockItems.length,
+              page: 1,
+              totalPages: 1,
+              isLoading: false 
+            });
+          } else {
+            // Keep existing items and just update loading state
+            set({ 
+              total: currentItems.length,
+              page: 1,
+              totalPages: 1,
+              isLoading: false 
+            });
+          }
         } else {
           // Real API call
           const currentFilters = { ...get().filters, ...filters };
