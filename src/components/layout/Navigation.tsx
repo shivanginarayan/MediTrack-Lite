@@ -59,6 +59,12 @@ const navigationItems: NavigationItem[] = [
     badge: 2
   },
   {
+    id: 'ai-assistant',
+    label: 'AI Assistant',
+    icon: Sparkles,
+    path: '/ai-assistant'
+  },
+  {
     id: 'settings',
     label: 'Settings',
     icon: Settings,

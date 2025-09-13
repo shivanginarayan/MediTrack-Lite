@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.62.0",
     "@hookform/resolvers": "^5.2.1",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-label": "^2.1.7",
@@ -26,6 +27,8 @@
     "react-hook-form": "^7.62.0",
     "react-i18next": "^15.7.3",
     "react-router-dom": "^7.9.1",
+    "rxjs": "^7.8.2",
+    "rxjs-for-await": "^1.0.0",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
     "vercel": "^48.0.0",

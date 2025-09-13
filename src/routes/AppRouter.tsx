@@ -6,6 +6,7 @@ import { Layout } from '../components/layout/Layout';
 
 // Placeholder components for missing routes
 import InventoryPage from '@/components/inventory/InventoryPage'
+import AIAssistant from '@/pages/AIAssistant'
 
 function AlertsPage({ onNavigate }: { onNavigate: (path: string) => void }) {
   console.log('AlertsPage navigation handler:', onNavigate);
@@ -90,6 +91,7 @@ function AppContent() {
         <Route path="/inventory" element={<InventoryPage onNavigate={handleNavigate} />} />
         <Route path="/alerts" element={<AlertsPage onNavigate={handleNavigate} />} />
         <Route path="/messages" element={<MessagesPage onNavigate={handleNavigate} />} />
+        <Route path="/ai-assistant" element={<AIAssistant />} />
         <Route path="/settings" element={<SettingsPage onNavigate={handleNavigate} />} />
       </Routes>
     </Layout>
