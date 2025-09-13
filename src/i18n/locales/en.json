@@ -1,0 +1,148 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "filter": "Filter",
+    "clear": "Clear",
+    "submit": "Submit",
+    "close": "Close",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No",
+    "details": "Details",
+    "comingSoon": "Coming soon",
+    "itemNotFound": "Item not found",
+    "pageNotFound": "Page not found"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "email": "Email",
+    "password": "Password",
+    "forgotPassword": "Forgot Password?",
+    "rememberMe": "Remember me",
+    "loginError": "Invalid email or password",
+    "loginSuccess": "Login successful",
+    "welcome": "Welcome back!"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "inventory": "Inventory Management",
+    "alerts": "Alerts & Notifications",
+    "messages": "Messages",
+    "reports": "Reports",
+    "settings": "Settings",
+    "profile": "Profile"
+  },
+  "inventory": {
+    "title": "Medication Inventory",
+    "description": "Manage your medication stock, track expiry dates, and monitor inventory levels",
+    "addMedication": "Add Medication",
+    "editMedication": "Edit Medication",
+    "deleteMedication": "Delete Medication",
+    "medicationName": "Medication Name",
+    "category": "Category",
+    "quantity": "Quantity",
+    "unit": "Unit",
+    "expirationDate": "Expiration Date",
+    "location": "Location",
+    "status": "Status",
+    "batchNumber": "Batch Number",
+    "supplier": "Supplier",
+    "cost": "Cost",
+    "notes": "Notes",
+    "lowStock": "Low Stock",
+    "outOfStock": "Out of Stock",
+    "inStock": "In Stock",
+    "expired": "Expired",
+    "nearExpiry": "Near Expiry",
+    "searchPlaceholder": "Search medications...",
+    "noResults": "No medications found",
+    "totalItems": "Total Items",
+    "categories": {
+      "all": "All Categories",
+      "tablet": "Tablet",
+      "capsule": "Capsule",
+      "liquid": "Liquid",
+      "injection": "Injection",
+      "cream": "Cream",
+      "supplement": "Supplement"
+    },
+    "sortBy": {
+      "name": "Name",
+      "quantity": "Quantity",
+      "expiration": "Expiration Date",
+      "category": "Category"
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "overview": "Overview",
+    "quickStats": "Quick Stats",
+    "recentActivity": "Recent Activity",
+    "alerts": "Alerts",
+    "lowStockAlert": "{{count}} items are running low on stock",
+    "expiryAlert": "{{count}} items are expiring soon",
+    "totalMedications": "Total Medications",
+    "lowStockItems": "Low Stock Items",
+    "expiringSoon": "Expiring Soon",
+    "outOfStock": "Out of Stock"
+  },
+  "reports": {
+    "title": "Reports",
+    "inventoryReport": "Inventory Report",
+    "expiryReport": "Expiry Report",
+    "stockReport": "Stock Report",
+    "generateReport": "Generate Report",
+    "exportPDF": "Export PDF",
+    "exportCSV": "Export CSV",
+    "dateRange": "Date Range",
+    "from": "From",
+    "to": "To"
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Configure your preferences and system settings",
+    "general": "General",
+    "notifications": "Notifications",
+    "language": "Language",
+    "theme": "Theme",
+    "profile": "Profile",
+    "account": "Account",
+    "preferences": "Preferences",
+    "lowStockThreshold": "Low Stock Threshold",
+    "expiryWarningDays": "Expiry Warning Days",
+    "emailNotifications": "Email Notifications",
+    "pushNotifications": "Push Notifications"
+  },
+  "alerts": {
+    "description": "Monitor expiry dates, low stock, and system alerts"
+  },
+  "messages": {
+    "description": "Communicate with team members and suppliers"
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Please enter a valid email address",
+    "minLength": "Must be at least {{min}} characters",
+    "maxLength": "Must be no more than {{max}} characters",
+    "number": "Must be a valid number",
+    "date": "Must be a valid date",
+    "positiveNumber": "Must be a positive number"
+  },
+  "notifications": {
+    "medicationAdded": "Medication added successfully",
+    "medicationUpdated": "Medication updated successfully",
+    "medicationDeleted": "Medication deleted successfully",
+    "settingsSaved": "Settings saved successfully",
+    "reportGenerated": "Report generated successfully",
+    "exportCompleted": "Export completed successfully"
+  }
+}

@@ -236,7 +236,7 @@ export function SettingsForm({ initialData, onSave, className }: SettingsFormPro
                   <Input
                     id="firstName"
                     value={settings.firstName}
-                    onChange={(e) => handleInputChange('firstName', e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('firstName', e.target.value)}
                     className="border-2 border-gray-200 rounded-xl focus:border-medical-blue-500 focus:ring-0 hover:border-gray-300 hover:shadow-lg focus:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm transform hover:-translate-y-0.5 focus:-translate-y-1"
                   />
                 </div>
@@ -245,7 +245,7 @@ export function SettingsForm({ initialData, onSave, className }: SettingsFormPro
                   <Input
                     id="lastName"
                     value={settings.lastName}
-                    onChange={(e) => handleInputChange('lastName', e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('lastName', e.target.value)}
                     className="border-2 border-gray-200 rounded-xl focus:border-medical-blue-500 focus:ring-0 hover:border-gray-300 hover:shadow-lg focus:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm transform hover:-translate-y-0.5 focus:-translate-y-1"
                   />
                 </div>
@@ -257,7 +257,7 @@ export function SettingsForm({ initialData, onSave, className }: SettingsFormPro
                   id="email"
                   type="email"
                   value={settings.email}
-                  onChange={(e) => handleInputChange('email', e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('email', e.target.value)}
                   className="border-2 border-gray-200 rounded-xl focus:border-medical-blue-500 focus:ring-0 hover:border-gray-300 hover:shadow-lg focus:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm transform hover:-translate-y-0.5 focus:-translate-y-1"
                 />
               </div>
@@ -268,7 +268,7 @@ export function SettingsForm({ initialData, onSave, className }: SettingsFormPro
                   <Input
                     id="role"
                     value={settings.role}
-                    onChange={(e) => handleInputChange('role', e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('role', e.target.value)}
                     className="border-2 border-gray-200 rounded-xl focus:border-medical-blue-500 focus:ring-0 hover:border-gray-300 hover:shadow-lg focus:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm transform hover:-translate-y-0.5 focus:-translate-y-1"
                   />
                 </div>
@@ -277,7 +277,7 @@ export function SettingsForm({ initialData, onSave, className }: SettingsFormPro
                   <Input
                     id="department"
                     value={settings.department}
-                    onChange={(e) => handleInputChange('department', e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('department', e.target.value)}
                     className="border-2 border-gray-200 rounded-xl focus:border-medical-blue-500 focus:ring-0 hover:border-gray-300 hover:shadow-lg focus:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm transform hover:-translate-y-0.5 focus:-translate-y-1"
                   />
                 </div>
@@ -349,7 +349,7 @@ export function SettingsForm({ initialData, onSave, className }: SettingsFormPro
                   <select
                     id="language"
                     value={settings.language}
-                    onChange={(e) => handleInputChange('language', e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleInputChange('language', e.target.value)}
                     className="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-medical-green-500 focus:ring-0 hover:border-gray-300 hover:shadow-lg focus:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm"
                   >
                     <option value="en">English</option>
@@ -362,7 +362,7 @@ export function SettingsForm({ initialData, onSave, className }: SettingsFormPro
                   <select
                     id="timezone"
                     value={settings.timezone}
-                    onChange={(e) => handleInputChange('timezone', e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleInputChange('timezone', e.target.value)}
                     className="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-medical-green-500 focus:ring-0 hover:border-gray-300 hover:shadow-lg focus:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm"
                   >
                     <option value="UTC-8">Pacific Time (UTC-8)</option>
@@ -379,7 +379,7 @@ export function SettingsForm({ initialData, onSave, className }: SettingsFormPro
                   <select
                     id="dateFormat"
                     value={settings.dateFormat}
-                    onChange={(e) => handleInputChange('dateFormat', e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleInputChange('dateFormat', e.target.value)}
                     className="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-medical-green-500 focus:ring-0 hover:border-gray-300 hover:shadow-lg focus:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm"
                   >
                     <option value="MM/DD/YYYY">MM/DD/YYYY</option>
@@ -392,7 +392,7 @@ export function SettingsForm({ initialData, onSave, className }: SettingsFormPro
                   <select
                     id="theme"
                     value={settings.theme}
-                    onChange={(e) => handleInputChange('theme', e.target.value as 'light' | 'dark' | 'auto')}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => handleInputChange('theme', e.target.value as 'light' | 'dark' | 'auto')}
                     className="w-full p-3 border-2 border-gray-200 rounded-xl focus:border-medical-green-500 focus:ring-0 hover:border-gray-300 hover:shadow-lg focus:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm"
                   >
                     <option value="light">Light</option>
@@ -432,7 +432,7 @@ export function SettingsForm({ initialData, onSave, className }: SettingsFormPro
                   <input
                     type="checkbox"
                     checked={settings.twoFactorAuth}
-                    onChange={(e) => handleInputChange('twoFactorAuth', e.target.checked)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('twoFactorAuth', e.target.checked)}
                     className="sr-only peer"
                   />
                   <div className="w-12 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-medical-blue-300/50 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all after:shadow-md peer-checked:bg-gradient-to-r peer-checked:from-medical-blue-500 peer-checked:to-medical-green-500 hover:shadow-lg transition-all duration-300"></div>
@@ -453,7 +453,7 @@ export function SettingsForm({ initialData, onSave, className }: SettingsFormPro
                     min="5"
                     max="480"
                     value={settings.sessionTimeout}
-                    onChange={(e) => handleInputChange('sessionTimeout', parseInt(e.target.value))}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('sessionTimeout', parseInt(e.target.value))}
                     className="border-2 border-gray-200 rounded-xl focus:border-medical-blue-500 focus:ring-0 hover:border-gray-300 hover:shadow-lg focus:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm transform hover:-translate-y-0.5 focus:-translate-y-1"
                   />
                 </div>
@@ -470,7 +470,7 @@ export function SettingsForm({ initialData, onSave, className }: SettingsFormPro
                     min="30"
                     max="365"
                     value={settings.passwordExpiry}
-                    onChange={(e) => handleInputChange('passwordExpiry', parseInt(e.target.value))}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('passwordExpiry', parseInt(e.target.value))}
                     className="border-2 border-gray-200 rounded-xl focus:border-medical-blue-500 focus:ring-0 hover:border-gray-300 hover:shadow-lg focus:shadow-xl transition-all duration-300 bg-white/90 backdrop-blur-sm transform hover:-translate-y-0.5 focus:-translate-y-1"
                   />
                 </div>
