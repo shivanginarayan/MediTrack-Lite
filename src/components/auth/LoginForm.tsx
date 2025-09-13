@@ -1,21 +1,23 @@
 import { useState } from 'react'
-import { Button } from '@/components/ui/button'
+import { Eye, EyeOff, Mail, Lock, Activity, AlertCircle } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Eye, EyeOff, Lock, Mail, AlertCircle } from 'lucide-react'
+
+// import { LoadingButton } from '@/components/ui/loading'
+
 
 interface LoginFormProps {
   onLogin: (credentials: { email: string; password: string }) => Promise<void>
-  isLoading?: boolean
-  error?: string
 }
 
-export function LoginForm({ onLogin, isLoading = false, error }: LoginFormProps) {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+export function LoginForm({ onLogin }: LoginFormProps) {
+  const [email, setEmail] = useState('admin@meditrack-demo.com')
+  const [password, setPassword] = useState('demo123')
   const [showPassword, setShowPassword] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
   const [validationErrors, setValidationErrors] = useState<{
     email?: string
     password?: string
@@ -42,155 +44,140 @@ export function LoginForm({ onLogin, isLoading = false, error }: LoginFormProps)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log('🚀 FORM SUBMITTED!', { email, password })
+    alert('Form submitted! Check console for details.')
     
     if (!validateForm()) {
+      console.log('❌ Form validation failed')
       return
     }
+
+    setIsLoading(true)
+    setError('')
+    console.log('📞 Calling onLogin...')
     
     try {
       await onLogin({ email, password })
+      console.log('✅ Login successful!')
     } catch (err) {
-      // Error handling is managed by parent component
-      console.error('Login error:', err)
+      console.log('❌ Login error:', err)
+      setError(err instanceof Error ? err.message : 'Login failed')
+    } finally {
+      setIsLoading(false)
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        {/* Header */}
-        <div className="text-center">
-          <div className="mx-auto h-12 w-12 bg-brand-700 rounded-xl flex items-center justify-center mb-4">
-            <Lock className="h-6 w-6 text-white" />
-          </div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">
-            Welcome to MediTrack Lite
-          </h2>
-          <p className="text-gray-600">
-            Sign in to your clinic inventory management system
-          </p>
-        </div>
-
-        {/* Login Form */}
-        <Card className="shadow-lg">
-          <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-semibold text-center">
-              Sign In
-            </CardTitle>
-            <CardDescription className="text-center">
-              Enter your credentials to access your account
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Global Error Alert */}
-              {error && (
-                <Alert variant="destructive">
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertDescription>{error}</AlertDescription>
-                </Alert>
-              )}
-
-              {/* Email Field */}
-              <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) => {
-                      setEmail(e.target.value)
-                      if (validationErrors.email) {
-                        setValidationErrors(prev => ({ ...prev, email: undefined }))
-                      }
-                    }}
-                    className={`pl-10 ${validationErrors.email ? 'border-red-500 focus:border-red-500' : ''}`}
-                    disabled={isLoading}
-                    autoComplete="email"
-                  />
-                </div>
-                {validationErrors.email && (
-                  <p className="text-sm text-red-600">{validationErrors.email}</p>
-                )}
-              </div>
-
-              {/* Password Field */}
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input
-                    id="password"
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder="Enter your password"
-                    value={password}
-                    onChange={(e) => {
-                      setPassword(e.target.value)
-                      if (validationErrors.password) {
-                        setValidationErrors(prev => ({ ...prev, password: undefined }))
-                      }
-                    }}
-                    className={`pl-10 pr-10 ${validationErrors.password ? 'border-red-500 focus:border-red-500' : ''}`}
-                    disabled={isLoading}
-                    autoComplete="current-password"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
-                    disabled={isLoading}
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Eye className="h-4 w-4" />
-                    )}
-                  </button>
-                </div>
-                {validationErrors.password && (
-                  <p className="text-sm text-red-600">{validationErrors.password}</p>
-                )}
-              </div>
-
-              {/* Submit Button */}
-              <Button
-                type="submit"
-                className="w-full bg-brand-700 hover:bg-brand-800 text-white"
-                disabled={isLoading}
-              >
-                {isLoading ? (
-                  <div className="flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    Signing In...
-                  </div>
-                ) : (
-                  'Sign In'
-                )}
-              </Button>
-            </form>
-
-            {/* Demo Credentials */}
-            <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-              <h4 className="text-sm font-medium text-blue-900 mb-2">Demo Credentials</h4>
-              <div className="text-sm text-blue-700 space-y-1">
-                <p><strong>Admin:</strong> admin@meditrack-demo.com / demo123</p>
-                <p><strong>Lead:</strong> lead@meditrack-demo.com / demo123</p>
-                <p><strong>Staff:</strong> staff@meditrack-demo.com / demo123</p>
-              </div>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      {/* Floating background elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-purple-400 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div className="absolute top-40 left-40 w-80 h-80 bg-pink-400 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+      </div>
+      
+      <Card className="w-full max-w-md relative z-10 backdrop-blur-sm bg-white/90 shadow-xl border-0">
+        <CardHeader className="space-y-1 text-center">
+          <div className="flex items-center justify-center mb-4">
+            <div className="p-3 bg-blue-600 rounded-full">
+              <Activity className="h-8 w-8 text-white" />
             </div>
-          </CardContent>
-        </Card>
-
-        {/* Footer */}
-        <div className="text-center text-sm text-gray-500">
-          <p>© 2024 MediTrack Lite. All rights reserved.</p>
-          <p className="mt-1">
-            Secure clinic inventory management system
-          </p>
-        </div>
+          </div>
+          <CardTitle className="text-2xl font-bold text-gray-900">Welcome to MediTrack</CardTitle>
+          <CardDescription className="text-gray-600">
+            Sign in to access your medical dashboard
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {error && (
+            <Alert className="border-red-200 bg-red-50">
+              <AlertCircle className="h-4 w-4 text-red-600" />
+              <AlertDescription className="text-red-800">{error}</AlertDescription>
+            </Alert>
+          )}
+          
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-sm font-medium text-gray-700">
+                Email Address
+              </Label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <Input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className={`pl-10 ${validationErrors.email ? 'border-red-300 focus:border-red-500' : ''}`}
+                  placeholder="Enter your email"
+                  disabled={isLoading}
+                />
+              </div>
+              {validationErrors.email && (
+                <p className="text-sm text-red-600">{validationErrors.email}</p>
+              )}
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="password" className="text-sm font-medium text-gray-700">
+                Password
+              </Label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                <Input
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className={`pl-10 pr-10 ${validationErrors.password ? 'border-red-300 focus:border-red-500' : ''}`}
+                  placeholder="Enter your password"
+                  disabled={isLoading}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+                  disabled={isLoading}
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
+              {validationErrors.password && (
+                <p className="text-sm text-red-600">{validationErrors.password}</p>
+              )}
+            </div>
+            
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium py-2.5 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2"
+            >
+              {isLoading ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                  <span>Signing In...</span>
+                </>
+              ) : (
+                <span>Sign In to Dashboard</span>
+              )}
+            </button>
+          </form>
+          
+          {/* Demo Credentials */}
+          <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+            <p className="text-sm text-blue-800 font-medium mb-2">Demo Credentials:</p>
+            <p className="text-xs text-blue-700">Admin: admin@meditrack-demo.com / demo123</p>
+            <p className="text-xs text-blue-700">Lead: lead@meditrack-demo.com / demo123</p>
+            <p className="text-xs text-blue-700">Staff: staff@meditrack-demo.com / demo123</p>
+          </div>
+        </CardContent>
+      </Card>
+      
+      {/* Footer */}
+      <div className="absolute bottom-4 left-0 right-0 text-center">
+        <p className="text-sm text-gray-500">
+          © 2024 MediTrack. Secure medical data management.
+        </p>
       </div>
     </div>
   )

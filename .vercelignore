@@ -28,7 +28,16 @@ yarn-error.log*
 # Testing
 coverage
 
+# Git
+.git
+.gitignore
+
+# Build artifacts
+dist
+
 # Misc
 *.tgz
 *.tar.gz
 .cache
+README.md
+DEPLOYMENT.md

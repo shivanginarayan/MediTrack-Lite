@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-export type Route = '/login' | '/inventory' | '/alerts' | '/messages' | '/settings' | '/item'
+export type Route = '/login' | '/dashboard' | '/inventory' | '/alerts' | '/messages' | '/settings' | '/item'
 
 export interface Notification {
   id: string
@@ -68,7 +68,7 @@ const generateId = () => Date.now().toString() + Math.random().toString(36).subs
 
 export const useUIStore = create<UIState>((set, get) => ({
   // Initial state
-  currentRoute: '/inventory',
+  currentRoute: '/dashboard',
   previousRoute: null,
   modals: [],
   notifications: [],
