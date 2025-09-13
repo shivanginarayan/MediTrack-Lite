@@ -1,0 +1,201 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  password  String
+  role      String   @default("STAFF") // STAFF, LEAD, ADMIN
+  clinicId  String
+  clinic    Clinic   @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  isActive    Boolean   @default(true)
+  lastLoginAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  stockAdjustments StockAdjustment[]
+  messagesSent     Message[]
+  alertRules       AlertRule[]
+  messageTemplates MessageTemplate[]
+
+  @@map("users")
+}
+
+model Clinic {
+  id        String  @id @default(cuid())
+  name      String
+  address   String?
+  phone     String?
+  email     String?
+  timezone  String  @default("UTC")
+  settings  String? // JSON string for clinic settings
+  isActive  Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  users           User[]
+  items           Item[]
+  alertRules      AlertRule[]
+  messages        Message[]
+  messageTemplates MessageTemplate[]
+
+  @@map("clinics")
+}
+
+model Item {
+  id          String     @id @default(cuid())
+  name        String
+  description String?
+  category    String?
+  unit        String     @default("units")
+  threshold   Int        @default(10)
+  price       Float?
+  clinicId    String
+  clinic      Clinic     @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  isActive    Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  // Relations
+  batches          Batch[]
+  stockAdjustments StockAdjustment[]
+  alertRules       AlertRule[]
+
+  @@map("items")
+}
+
+model Batch {
+  id         String    @id @default(cuid())
+  batchNumber String
+  lotNumber  String?
+  expiryDate DateTime?
+  quantity   Int       @default(0)
+  itemId     String
+  item       Item      @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  // Relations
+  stockAdjustments StockAdjustment[]
+
+  @@unique([itemId, batchNumber])
+  @@map("batches")
+}
+
+model StockAdjustment {
+  id        String           @id @default(cuid())
+  type      String // IN, OUT, ADJUSTMENT, EXPIRED, DAMAGED, DISPENSED, RECEIVED
+  quantity  Int
+  reason    String
+  notes     String?
+  itemId    String
+  item      Item             @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  batchId   String?
+  batch     Batch?           @relation(fields: [batchId], references: [id], onDelete: SetNull)
+  userId    String
+  user      User             @relation(fields: [userId], references: [id])
+  createdAt DateTime         @default(now())
+
+  @@map("stock_adjustments")
+}
+
+model AlertRule {
+  id          String      @id @default(cuid())
+  name        String
+  type        String // LOW_STOCK, EXPIRING_SOON, EXPIRED, CUSTOM
+  threshold   Int?
+  isActive    Boolean     @default(true)
+  recipients  String // JSON array of email addresses or user IDs
+  channels    String // JSON array: EMAIL, SMS, PUSH
+  itemId      String?
+  item        Item?       @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  clinicId    String
+  clinic      Clinic      @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User        @relation(fields: [userId], references: [id])
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  // Relations
+  alerts      Alert[]
+
+  @@map("alert_rules")
+}
+
+model Alert {
+  id          String      @id @default(cuid())
+  type       String // LOW_STOCK, EXPIRING_SOON, EXPIRED, CUSTOM
+  title      String
+  message    String
+  severity   String @default("MEDIUM") // LOW, MEDIUM, HIGH, CRITICAL
+  isRead      Boolean     @default(false)
+  isResolved  Boolean     @default(false)
+  data        String?     // JSON string for additional alert data
+  ruleId      String?
+  rule        AlertRule?  @relation(fields: [ruleId], references: [id], onDelete: SetNull)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@map("alerts")
+}
+
+model Message {
+  id          String        @id @default(cuid())
+  type        String // ALERT, BROADCAST, REMINDER, NOTIFICATION
+  subject     String
+  content     String
+  language    String      @default("en")
+  recipients  String      // JSON array of user IDs or email addresses
+  channels    String      // JSON array of delivery channels
+  status      String      @default("DRAFT") // DRAFT, QUEUED, SENDING, SENT, FAILED, CANCELLED
+  scheduledAt DateTime?
+  sentAt      DateTime?
+  metadata    String?       // JSON string for additional message metadata
+  templateId  String?
+  template    MessageTemplate? @relation("MessageTemplate", fields: [templateId], references: [id], onDelete: SetNull)
+  clinicId    String
+  clinic      Clinic        @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User          @relation(fields: [userId], references: [id])
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@map("messages")
+}
+
+model MessageTemplate {
+  id        String   @id @default(cuid())
+  name      String
+  subject   String?
+  content   String
+  language  String   @default("en")
+  type      String   // ALERT, BROADCAST, REMINDER, NOTIFICATION
+  variables String   // JSON array of available template variables
+  isActive  Boolean  @default(true)
+  clinicId  String
+  clinic    Clinic   @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  messages  Message[] @relation("MessageTemplate")
+
+  @@map("message_templates")
+}
+
+// Note: Using String types instead of enums for SQLite compatibility
+// Valid values are documented in comments above each field
