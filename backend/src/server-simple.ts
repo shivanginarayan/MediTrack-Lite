@@ -5,6 +5,14 @@ import compression from 'compression';
 import dotenv from 'dotenv';
 import { createServer } from 'http';
 
+// Import route handlers
+// import authRoutes from './routes/auth';
+import inventoryRoutes from './routes/inventory';
+// import alertsRoutes from './routes/alerts';
+// import messagesRoutes from './routes/messages';
+// import settingsRoutes from './routes/settings';
+// import healthRoutes from './routes/health';
+
 // Load environment variables
 dotenv.config();
 
@@ -45,6 +53,14 @@ app.get('/', (req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
+
+// API routes
+// app.use('/api/auth', authRoutes);
+app.use('/api/inventory', inventoryRoutes);
+// app.use('/api/alerts', alertsRoutes);
+// app.use('/api/messages', messagesRoutes);
+// app.use('/api/settings', settingsRoutes);
+// app.use('/api/health', healthRoutes);
 
 // API endpoints placeholder
 app.get('/api/v1/test', (req, res) => {

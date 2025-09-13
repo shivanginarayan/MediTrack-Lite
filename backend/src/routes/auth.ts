@@ -44,7 +44,7 @@ const generateTokens = (user: any) => {
 
   const refreshToken = jwt.sign(payload, process.env.JWT_SECRET!, {
     expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '30d',
-  });
+  } as any);
 
   return { token, refreshToken };
 };

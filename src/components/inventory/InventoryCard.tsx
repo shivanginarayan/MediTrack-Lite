@@ -76,8 +76,8 @@ export function InventoryCard({ item, onClick, loading = false }: InventoryCardP
     return <InventoryCardSkeleton />
   }
 
-  const status = statusConfig[item.status]
-  const category = categoryConfig[item.category as keyof typeof categoryConfig]
+  const status = statusConfig[item.status] || statusConfig['in-stock']
+  const category = categoryConfig[item.category as keyof typeof categoryConfig] || categoryConfig['otc']
   const isExpiringSoon = new Date(item.expiryDate) <= new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
   const isLowStock = item.status === 'low-stock' || item.quantity <= 10
 

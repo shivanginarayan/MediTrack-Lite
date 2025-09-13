@@ -4,6 +4,39 @@ import { Dashboard } from '../components/dashboard/Dashboard';
 import { LoginForm } from '../components/auth/LoginForm';
 import { Layout } from '../components/layout/Layout';
 
+// Placeholder components for missing routes
+import InventoryPage from '@/components/inventory/InventoryPage'
+
+function AlertsPage({ onNavigate }: { onNavigate: (path: string) => void }) {
+  console.log('AlertsPage navigation handler:', onNavigate);
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">Alerts</h1>
+      <p>Alerts and notifications will be displayed here.</p>
+    </div>
+  );
+}
+
+function MessagesPage({ onNavigate }: { onNavigate: (path: string) => void }) {
+  console.log('MessagesPage navigation handler:', onNavigate);
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">Messages</h1>
+      <p>Message center functionality will be implemented here.</p>
+    </div>
+  );
+}
+
+function SettingsPage({ onNavigate }: { onNavigate: (path: string) => void }) {
+  console.log('SettingsPage navigation handler:', onNavigate);
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">Settings</h1>
+      <p>Application settings will be available here.</p>
+    </div>
+  );
+}
+
 function AppContent() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -54,6 +87,10 @@ function AppContent() {
       <Routes>
         <Route path="/" element={<Dashboard onNavigate={handleNavigate} />} />
         <Route path="/dashboard" element={<Dashboard onNavigate={handleNavigate} />} />
+        <Route path="/inventory" element={<InventoryPage onNavigate={handleNavigate} />} />
+        <Route path="/alerts" element={<AlertsPage onNavigate={handleNavigate} />} />
+        <Route path="/messages" element={<MessagesPage onNavigate={handleNavigate} />} />
+        <Route path="/settings" element={<SettingsPage onNavigate={handleNavigate} />} />
       </Routes>
     </Layout>
   );
