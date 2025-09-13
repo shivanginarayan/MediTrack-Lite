@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
@@ -14,6 +15,7 @@ interface InventoryPageProps {
 }
 
 export function InventoryPage({ onNavigate }: InventoryPageProps) {
+  const location = useLocation()
   const {
     items,
     filters,
@@ -25,7 +27,8 @@ export function InventoryPage({ onNavigate }: InventoryPageProps) {
     deleteItem,
     setFilters,
     getLowStockItems,
-    getExpiringItems
+    getExpiringItems,
+    getFilteredItems
   } = useInventoryStore()
 
   // Use onNavigate to avoid unused parameter warning
@@ -37,11 +40,28 @@ export function InventoryPage({ onNavigate }: InventoryPageProps) {
   const [showDetailModal, setShowDetailModal] = useState(false)
 
 
+  // Check for URL parameters and set filters accordingly
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search)
+    const filterParam = urlParams.get('filter')
+    
+    if (filterParam === 'expiring-soon') {
+      setFilters({ status: 'expiring-soon' })
+    } else if (filterParam === 'low-stock') {
+      setFilters({ status: 'low-stock' })
+    } else if (!filterParam) {
+      setFilters({ status: 'all' })
+    }
+  }, [location.search, setFilters])
+
   // Fetch items on component mount and when filters change
   useEffect(() => {
     fetchItems()
   }, [fetchItems])
 
+  // Get filtered items
+  const filteredItems = getFilteredItems()
+  
   // Statistics
   const totalItems = items.length
   const lowStockItems = getLowStockItems()
@@ -197,7 +217,10 @@ export function InventoryPage({ onNavigate }: InventoryPageProps) {
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200 shadow-lg hover:shadow-xl transition-all duration-300">
+        <Card 
+          className="bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-105 transform"
+          onClick={() => setFilters({ status: 'all' })}
+        >
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-blue-700 flex items-center gap-2">
               <Package className="h-4 w-4" />
@@ -213,7 +236,10 @@ export function InventoryPage({ onNavigate }: InventoryPageProps) {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-emerald-200 shadow-lg hover:shadow-xl transition-all duration-300">
+        <Card 
+          className="bg-gradient-to-br from-emerald-50 to-emerald-100 border-emerald-200 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-105 transform"
+          onClick={() => setFilters({ status: 'in-stock' })}
+        >
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-emerald-700 flex items-center gap-2">
               <TrendingUp className="h-4 w-4" />
@@ -228,7 +254,10 @@ export function InventoryPage({ onNavigate }: InventoryPageProps) {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-amber-50 to-amber-100 border-amber-200 shadow-lg hover:shadow-xl transition-all duration-300">
+        <Card 
+          className="bg-gradient-to-br from-amber-50 to-amber-100 border-amber-200 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-105 transform"
+          onClick={() => setFilters({ status: 'low-stock' })}
+        >
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-amber-700 flex items-center gap-2">
               <AlertTriangle className="h-4 w-4" />
@@ -244,7 +273,10 @@ export function InventoryPage({ onNavigate }: InventoryPageProps) {
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-red-50 to-red-100 border-red-200 shadow-lg hover:shadow-xl transition-all duration-300">
+        <Card 
+          className="bg-gradient-to-br from-red-50 to-red-100 border-red-200 shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer hover:scale-105 transform"
+          onClick={() => setFilters({ status: 'expiring-soon' })}
+        >
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-red-700 flex items-center gap-2">
               <AlertTriangle className="h-4 w-4" />
@@ -277,7 +309,7 @@ export function InventoryPage({ onNavigate }: InventoryPageProps) {
               </div>
             ))}
           </div>
-        ) : items.length === 0 ? (
+        ) : filteredItems.length === 0 ? (
           <Card className="p-12 text-center bg-gradient-to-br from-gray-50 to-gray-100">
             <Package className="h-16 w-16 text-gray-400 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-600 mb-2">No medications found</h3>
@@ -299,7 +331,7 @@ export function InventoryPage({ onNavigate }: InventoryPageProps) {
           </Card>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {items.map((item, index) => (
+            {filteredItems.map((item, index) => (
               <div 
                 key={item.id} 
                 className="animate-fade-in"

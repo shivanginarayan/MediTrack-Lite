@@ -157,6 +157,48 @@ export const useInventoryStore = create<InventoryState>()(persist(
                 batchNumber: 'VIT2024003',
                 manufacturer: 'NutriCorp',
                 status: 'out-of-stock'
+              },
+              {
+                id: '4',
+                name: 'Acetaminophen 500mg',
+                description: 'Pain reliever and fever reducer',
+                quantity: 75,
+                unit: 'tablets',
+                category: 'otc',
+                location: 'Pharmacy A-2',
+                expiryDate: '2025-01-15',
+                minStockLevel: 25,
+                maxStockLevel: 200,
+                cost: 0.10,
+                supplier: 'MedSupply Co',
+                createdAt: '2024-01-01T08:00:00Z',
+                updatedAt: '2024-01-01T08:00:00Z',
+                genericName: 'Acetaminophen',
+                dosage: '500mg',
+                batchNumber: 'ACE2024004',
+                manufacturer: 'PharmaCorp',
+                status: 'in-stock'
+              },
+              {
+                id: '5',
+                name: 'Amoxicillin 250mg',
+                description: 'Antibiotic medication',
+                quantity: 8,
+                unit: 'capsules',
+                category: 'prescription',
+                location: 'Pharmacy A-1',
+                expiryDate: '2025-08-20',
+                minStockLevel: 15,
+                maxStockLevel: 150,
+                cost: 0.25,
+                supplier: 'MedSupply Co',
+                createdAt: '2024-01-20T11:30:00Z',
+                updatedAt: '2024-01-20T11:30:00Z',
+                genericName: 'Amoxicillin',
+                dosage: '250mg',
+                batchNumber: 'AMX2024005',
+                manufacturer: 'AntibioticCorp',
+                status: 'low-stock'
               }
             ];
             
@@ -372,7 +414,21 @@ export const useInventoryStore = create<InventoryState>()(persist(
           item.batchNumber?.toLowerCase().includes(filters.query.toLowerCase())
         
         const matchesCategory = filters.category === 'all' || item.category === filters.category
-        const matchesStatus = filters.status === 'all' || item.status === filters.status
+        
+        // Handle special status filters
+        let matchesStatus = true
+        if (filters.status === 'expiring-soon') {
+          const cutoffDate = new Date()
+          cutoffDate.setDate(cutoffDate.getDate() + 30)
+          const expiryDate = new Date(item.expiryDate)
+          matchesStatus = expiryDate <= cutoffDate && item.status !== 'expired'
+        } else if (filters.status === 'low-stock') {
+          const minStock = item.minStockLevel || 10
+          matchesStatus = item.quantity <= minStock
+        } else {
+          matchesStatus = filters.status === 'all' || item.status === filters.status
+        }
+        
         const matchesLocation = filters.location === 'all' || item.location === filters.location
         
         return matchesQuery && matchesCategory && matchesStatus && matchesLocation

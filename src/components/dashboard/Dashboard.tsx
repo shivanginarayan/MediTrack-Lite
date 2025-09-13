@@ -240,7 +240,10 @@ export function Dashboard({ onNavigate }: DashboardProps) {
               {/* Alerts */}
               <div className="space-y-4">
                 {lowStockItems > 0 && (
-                  <div className="group p-4 rounded-2xl bg-gradient-to-r from-red-50 to-red-100/50 border border-red-200/50 shadow-sm hover:shadow-md transition-all duration-300 animate-fade-in">
+                  <div 
+                    onClick={() => onNavigate('/inventory?filter=low-stock')}
+                    className="group p-4 rounded-2xl bg-gradient-to-r from-red-50 to-red-100/50 border border-red-200/50 shadow-sm hover:shadow-md transition-all duration-300 animate-fade-in cursor-pointer hover:scale-105 transform"
+                  >
                     <div className="flex items-center gap-3">
                       <div className="p-2 bg-red-500 rounded-xl shadow-md group-hover:scale-110 transition-transform duration-300">
                         <AlertTriangle className="h-5 w-5 text-white" />
@@ -252,7 +255,10 @@ export function Dashboard({ onNavigate }: DashboardProps) {
                   </div>
                 )}
                 {expiringSoon > 0 && (
-                  <div className="group p-4 rounded-2xl bg-gradient-to-r from-yellow-50 to-orange-100/50 border border-yellow-200/50 shadow-sm hover:shadow-md transition-all duration-300 animate-fade-in">
+                  <div 
+                    onClick={() => onNavigate('/inventory?filter=expiring-soon')}
+                    className="group p-4 rounded-2xl bg-gradient-to-r from-yellow-50 to-orange-100/50 border border-yellow-200/50 shadow-sm hover:shadow-md transition-all duration-300 animate-fade-in cursor-pointer hover:scale-105 transform"
+                  >
                     <div className="flex items-center gap-3">
                       <div className="p-2 bg-yellow-500 rounded-xl shadow-md group-hover:scale-110 transition-transform duration-300">
                         <Clock className="h-5 w-5 text-white" />

@@ -31,6 +31,7 @@ const statusOptions = [
   { value: 'all', label: 'All Status' },
   { value: 'in-stock', label: 'In Stock' },
   { value: 'low-stock', label: 'Low Stock' },
+  { value: 'expiring-soon', label: 'Expiring Soon' },
   { value: 'expired', label: 'Expired' },
   { value: 'out-of-stock', label: 'Out of Stock' },
 ]
